@@ -1,33 +1,33 @@
 import React from "react";
 import { useData } from "../../context/CreateContext";
-import "./recipiedetails.css";
+import styles from './RecipieDescription.module.css'
 const RecipieDecription = () => {
   const { singleRecipie } = useData();
 
   console.log(singleRecipie);
   return (
     <>
-      <h3 className="text-danger text-center mt-2">Recipe Description</h3>
-      <div className="details container border rounded mt-3 p-2">
-        <div className="detailsView">
-          <div className="leftView">
-            <h3 className="detailsTitle text-primary">{singleRecipie.label}</h3>
-            <h4 className="ingridients text-secondary">Ingredient</h4>
-            <div className="ingridiantsContainer">
+      <h3 className={styles.description}>Recipe Description</h3>
+      <div className={styles.details}>
+        <div className={styles.detailsView}>
+          <div className={styles.leftView}>
+            <h3 className={styles.detailsTitle}>{singleRecipie.label}</h3>
+            <h4 className={styles.ingrediants}>Ingredient</h4>
+            <div>
               {singleRecipie.ingredientLines.map((item) => {
-                return <p className="ingrediants text-dark">{item}</p>;
+                return <p className={styles.ingrediants}>{item}</p>;
               })}
             </div>
             <a href={singleRecipie.shareAs} target="blank">
-              <button className="btn btn-primary">Publisher</button>
+              <button className={styles.publisherBtn}>Publisher</button>
             </a>
             <a href={singleRecipie.url} target="blank">
-              <button className="btn btn-secondary mx-2">Recipe Url</button>
+              <button className={styles.urlBtn}>Recipe Url</button>
             </a>
           </div>
-          <div className="rightView">
+          <div className={styles.rightView}>
             <img
-              className="recipeImage"
+              className={styles.recipeImage}
               src={singleRecipie.image}
               alt={singleRecipie.label}
             />

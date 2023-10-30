@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "./home.css";
+
 import SearchIcon from "@mui/icons-material/Search";
 import { useData } from "../../context/CreateContext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import styles from './Home.module.css'
+import IntialData from "../IntialData/IntialData";
+
+
 
 const Home = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [submitQuery, setSubmitQuery] = useState("");
-
+  const[loading,setLoading]=useState(true)
+  console.log(styles)
   const {
     recipiesStore,
     setRecipies,
@@ -36,6 +41,7 @@ const Home = () => {
       );
       const jsonData = await response.json();
       setRecipies(jsonData?.hits);
+      setLoading(false)
     } catch (error) {
       console.log(error);
     }
@@ -51,34 +57,35 @@ const Home = () => {
   };
 
   return (
-    <div className="container border rounded home mt-3 p-3">
-      <h2 className="header text-primary">
-        Search Recipies With <span className="title">Food Studio</span>
+    <div className={styles.home}>
+      <h2 className={styles.header}>
+        Search Recipies With <span className={styles.title}>Food Studio</span>
       </h2>
-      <form className="input-group">
+      <form className={styles.inputGroup}>
         <input
           type="text"
-          className="form-control"
+          className={styles.formControl}
           placeholder="Search Recipie"
           value={query}
           onChange={handleQuery}
         />
-        <button className="input-group-text" onClick={handleSearch}>
+        <button className={styles.btn} onClick={handleSearch}>
           <SearchIcon />
         </button>
       </form>
-      <div className="recipieContaner">
+      {
+      (loading ) ? (<IntialData/>) : (   <div className={styles.recipieContaner}>
         {recipiesStore.map((recipies, idx) => {
           return (
-            <div className="card">
-              <div className="card-img-top recipieImg">
-                <img src={recipies.recipe.image} alt={recipies.recipe.label} />
-                <div className="like-btn">
+            <div className={styles.card}>
+              <div className={styles.recipieImg}>
+                <img className={styles.food} src={recipies.recipe.image} alt={recipies.recipe.label} />
+                <div className={styles.cardBody}>
                   {liked.some((item) => {
                     return item.recipe.label == recipies.recipe.label;
                   }) ? (
                     <button
-                      className="favIcon"
+                      className={styles.favIcon}
                       onClick={() => {
                         var data = liked.filter((item) => {
                           return item.recipe.label !== recipies.recipe.label;
@@ -90,7 +97,7 @@ const Home = () => {
                     </button>
                   ) : (
                     <button
-                      className="favIcon"
+                      className={styles.favIcon}
                       onClick={() => {
                         setliked([...liked, recipies]);
                       }}
@@ -99,26 +106,21 @@ const Home = () => {
                     </button>
                   )}
                 </div>
-                <div className="minutes-button">
+                <div className={styles.minutesButton}>
                   <p>
                     <TimelapseIcon /> {recipies.recipe.totalTime} Min
                   </p>
                 </div>
               </div>
-              <div className="card-body">
-                <div className="card-title">
-                  <h4 className="text-secondary">
+              <div className={styles.cardBody}>
+                <div>
+                  <h4 className={styles.textSecondary}>
                     {recipies?.recipe?.label?.slice(0, 20)}
                   </h4>
                 </div>
-                <div className="category">
-                  {recipies?.recipe?.dietLabels.map((cate) => {
-                    return <div className="category1">{cate}</div>;
-                  })}
-                </div>
-                <div className="info-btn">
+                <div>
                   <button
-                    className="btn btn-outline-primary w-100 mt-1"
+                    className={styles.infoBtn}
                     onClick={() => handledetails(idx)}
                   >
                     Read more
@@ -128,7 +130,8 @@ const Home = () => {
             </div>
           );
         })}
-      </div>
+      </div>)
+}
     </div>
   );
 };

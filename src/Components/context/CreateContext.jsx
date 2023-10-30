@@ -1,6 +1,5 @@
 import React, { useContext, createContext, useState, useEffect } from "react";
-import { data } from "./Dummy";
-console.log("data", data);
+
 
 const GlobalContext = createContext();
 const CreateContext = ({ children }) => {
